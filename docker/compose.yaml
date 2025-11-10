@@ -7,28 +7,15 @@ services:
             - SPRING_DATASOURCE_PASSWORD
             - SPRING_DATASOURCE_URL
             - SPRING_DATASOURCE_USERNAME
+            - ADMIN_FIRSTNAME
+            - ADMIN_LASTNAME
+            - ADMIN_USERNAME
+            - ADMIN_PASSWORD
+            - ADMIN_EMAIL
+            - ADMIN_PHONE
+            - AUTH_SECRET
+            - SPRING_MAIL_USERNAME
+            - SPRING_MAIL_PASSWORD
 
         image: firo1919/maaedbackend
-        depends_on:
-            db:
-                condition: service_healthy
         restart: unless-stopped
-    db:
-        environment:
-            - POSTGRES_USER
-            - POSTGRES_PASSWORD
-            - POSTGRES_DB
-        image: postgres:18
-        restart: unless-stopped
-        volumes:
-            - db_data:/var/lib/postgresql/18/data
-        healthcheck:
-            test:
-                ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
-            interval: 10s
-            timeout: 5s
-            retries: 5
-            start_period: 10s
-
-volumes:
-    db_data:
