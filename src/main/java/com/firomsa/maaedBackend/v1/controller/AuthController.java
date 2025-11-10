@@ -17,9 +17,9 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Slf4j
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Authentication", description = "API for performing authentication")
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
@@ -32,8 +32,7 @@ public class AuthController {
     @Operation(summary = "For registering a user")
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
-    public RegisterResponseDTO registerUser(
-            @Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
+    public RegisterResponseDTO registerUser(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         var response = authService.create(registerRequestDTO);
         return response;
     }

@@ -41,11 +41,11 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
             token = authHeader.split(" ")[1];
         }
         if (token != null) {
-            String username = jwtAuthService.getSubject(token);
-            if (username != null &&
+            String email = jwtAuthService.getSubject(token);
+            if (email != null &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails user = userDetailsService.loadUserByUsername(
-                        username);
+                        email);
                 boolean isValid = jwtAuthService.isValidToken(
                         token,
                         user.getUsername());

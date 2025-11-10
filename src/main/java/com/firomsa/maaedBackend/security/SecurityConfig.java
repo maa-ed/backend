@@ -18,51 +18,53 @@ import com.firomsa.maaedBackend.model.Roles;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JWTSecurityFilter jwtSecurityFilter;
+        private final JWTSecurityFilter jwtSecurityFilter;
 
-    private final UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint;
+        private final UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint;
 
-    public SecurityConfig(
-            JWTSecurityFilter jwtSecurityFilter,
-            UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint) {
-        this.jwtSecurityFilter = jwtSecurityFilter;
+        public SecurityConfig(
+                        JWTSecurityFilter jwtSecurityFilter,
+                        UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint) {
+                this.jwtSecurityFilter = jwtSecurityFilter;
 
-        this.unAuthorizedUserAuthenticationEntryPoint = unAuthorizedUserAuthenticationEntryPoint;
-    }
+                this.unAuthorizedUserAuthenticationEntryPoint = unAuthorizedUserAuthenticationEntryPoint;
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
-            throws Exception {
-        return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/docs",
-                                "/v3/api-docs",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**")
-                        .permitAll()
-                        .requestMatchers("/api/v1/customer/**").hasRole(Roles.CUSTOMER.name())
-                        .requestMatchers("/api/v1/admin/**").hasRole(Roles.ADMIN.name())
-                        .requestMatchers("/api/v1/restaurant/**").hasRole(Roles.RESTAURANT.name())
-                        .requestMatchers("/api/v1/delivery/**").hasRole(Roles.DELIVERY.name())
-                        .anyRequest()
-                        .authenticated())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(
-                        unAuthorizedUserAuthenticationEntryPoint))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(
-                        jwtSecurityFilter,
-                        UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
+                        throws Exception {
+                return httpSecurity
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(request -> request
+                                                .requestMatchers(
+                                                                "/api/v1/auth/**",
+                                                                "/docs",
+                                                                "/v3/api-docs",
+                                                                "/v3/api-docs/**",
+                                                                "/swagger-resources/**",
+                                                                "/swagger-ui.html",
+                                                                "/swagger-ui/**")
+                                                .permitAll()
+                                                .requestMatchers("/api/v1/customer/**").hasRole(Roles.CUSTOMER.name())
+                                                .requestMatchers("/api/v1/admin/**").hasRole(Roles.ADMIN.name())
+                                                .requestMatchers("/api/v1/restaurant/**")
+                                                .hasRole(Roles.RESTAURANT.name())
+                                                .requestMatchers("/api/v1/delivery/**").hasRole(Roles.DELIVERY.name())
+                                                .anyRequest()
+                                                .authenticated())
+                                .exceptionHandling(exception -> exception.authenticationEntryPoint(
+                                                unAuthorizedUserAuthenticationEntryPoint))
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .addFilterBefore(
+                                                jwtSecurityFilter,
+                                                UsernamePasswordAuthenticationFilter.class)
+                                .build();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(
+                        AuthenticationConfiguration authenticationConfiguration) throws Exception {
+                return authenticationConfiguration.getAuthenticationManager();
+        }
 }

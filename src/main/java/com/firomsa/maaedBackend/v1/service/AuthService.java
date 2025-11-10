@@ -1,7 +1,10 @@
 package com.firomsa.maaedBackend.v1.service;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -90,9 +93,15 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        return userRepository
+        var user = userRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException(
+                .orElseThrow(() -> new UsernameNotFoundException(
                         "USER: " + email));
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .disabled(!user.isActive())
+                .authorities(List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName().name())))
+                .build();
     }
 }

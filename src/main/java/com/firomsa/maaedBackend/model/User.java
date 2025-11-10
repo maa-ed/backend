@@ -39,7 +39,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails{
+public class User {
     @Id
     @GeneratedValue
     private UUID id;
@@ -81,14 +81,4 @@ public class User implements UserDetails{
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getName().name()));
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.active;
-    }
 }

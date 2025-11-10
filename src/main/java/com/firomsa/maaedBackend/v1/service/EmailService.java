@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.firomsa.maaedBackend.config.AdminConfig;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class EmailService {
     private JavaMailSender javaMailSender;
     private AdminConfig adminConfig;
@@ -18,6 +21,7 @@ public class EmailService {
     }
 
     public void sendOtp(String otp, String email) throws MailException {
+        log.info("Sending confirmation otp to: {}", email);
         var mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setFrom(adminConfig.getEmail());
