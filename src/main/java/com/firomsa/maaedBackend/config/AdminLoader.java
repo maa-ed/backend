@@ -47,6 +47,7 @@ public class AdminLoader implements CommandLineRunner {
                     .password(passwordEncoder.encode(adminProperties.getPassword()))
                     .firstName(adminProperties.getFirstName())
                     .lastName(adminProperties.getLastName())
+                    .active(true)
                     .role(role)
                     .createdAt(now)
                     .build();

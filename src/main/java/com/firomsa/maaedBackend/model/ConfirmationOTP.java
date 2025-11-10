@@ -1,7 +1,6 @@
 package com.firomsa.maaedBackend.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,7 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "refresh_tokens")
+@Table(name = "confirmation_otps")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -31,10 +30,17 @@ import lombok.ToString;
 @Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class RefreshToken {
+public class ConfirmationOTP {
     @Id
     @GeneratedValue
-    private UUID id;
+    private Integer id;
+
+    @NotNull
+    private String otp;
+
+    @NotNull
+    @Builder.Default
+    private boolean confirmed = Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -45,5 +51,4 @@ public class RefreshToken {
 
     @NotNull
     private LocalDateTime expiresAt;
-
 }

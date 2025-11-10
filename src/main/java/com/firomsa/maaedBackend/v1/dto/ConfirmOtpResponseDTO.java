@@ -1,6 +1,5 @@
 package com.firomsa.maaedBackend.v1.dto;
 
-public record RegisterResponseDTO(
-        UserResponseDTO data,
+public record ConfirmOtpResponseDTO(
         String message) {
 }
